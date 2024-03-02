@@ -51,7 +51,7 @@ const InsertVerifyUser = async (name,email,password) => {
                 
             })
 
-            const activationLink = `https://fms-backend-repo.onrender.com/${token}`;
+            const activationLink = `https://fms-backend-repo.onrender.com/signup/${token}`;
 
             const content =
             `<!DOCTYPE html>
