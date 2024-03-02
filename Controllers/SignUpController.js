@@ -51,7 +51,7 @@ const InsertVerifyUser = async (name,email,password) => {
                 
             })
 
-            const activationLink = `http://localhost:3050/signup/${token}`;
+            const activationLink = `https://farmersupermarket-8abbc.web.app/signup/${token}`;
 
             const content =
             `<!DOCTYPE html>
