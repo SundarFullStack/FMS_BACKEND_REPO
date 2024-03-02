@@ -51,7 +51,7 @@ const InsertVerifyUser = async (name,email,password) => {
                 
             })
 
-            const activationLink = `https://farmersupermarket-8abbc.web.app/signup/${token}`;
+            const activationLink = `https://fms-backend-repo.onrender.com/${token}`;
 
             const content =
             `<!DOCTYPE html>
