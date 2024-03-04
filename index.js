@@ -13,7 +13,7 @@ const ForgotPasswordRouter = require("./Routes/Authentication/ForgotPassword");
 const FPUpdateRouter = require("./Routes/Authentication/FPUpdate");
 const UserValidationRouter = require("./Routes/Application/UserValidation");
 const HomeRouter = require("./Routes/Application/Home");
-// const ReportRouter = require("./Routes/Application/Report");
+const ReportRouter = require("./Routes/Application/Report");
 
 app.use(bodyParser.json(), cors({ origin: "*" }));
 
@@ -34,6 +34,8 @@ app.use("/FPUpdate", FPUpdateRouter);
 app.use("/validUser", UserValidationRouter);
 
 app.use("/home", HomeRouter);
+
+app.use("/report", ReportRouter);
 
 app.listen(port, () => {
   console.log(`Server started successfully in the port: ${port}`);

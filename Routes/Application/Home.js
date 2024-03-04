@@ -58,88 +58,93 @@ router.get("/getProduct", async (req, res) => {
 // API for inserting all cart details in cart table
 
 router.post("/cartInsert", async (req, res) => {
-  try {
+ try{
     const { productName, productPrice, productQuantity } = await req.body;
 
     //   console.log(productName, productPrice, productQuantity);
-
-    const multiPrice = (await productPrice) * productQuantity;
-
-    const saveCartItem = new CartCollection({
-      productName: productName,
-      productPrice: productPrice,
-      productQuantity: productQuantity,
-      multiPrice: multiPrice,
-    });
-
-    const savedCartItem = await saveCartItem.save();
-
-    if (savedCartItem) {
-      res.status(200).json({
-        success: true,
-        message: "Item Added to cart Successfully",
-        data: savedCartItem,
-      });
-    } else {
-      res.status(400).json({
-        success: false,
-        message: "Error in saving cart items",
-      });
-    }
-  } catch (error) {
-    console.log("Error Occurred:", error);
-  }
+    
+        const multiPrice = await productPrice * productQuantity;
+    
+        const saveCartItem = new CartCollection({
+            productName: productName,
+            productPrice: productPrice,
+            productQuantity: productQuantity,
+            multiPrice:multiPrice
+        })
+    
+        const savedCartItem = await saveCartItem.save();
+    
+        if (savedCartItem) {
+            res.status(200).json({
+                success: true,
+                message: "Item Added to cart Successfully",
+                data:savedCartItem
+            })
+        } else {
+            res.status(400).json({
+                success: false,
+                message:"Error in saving cart items"
+            })
+        }
+ } catch (error) {
+     console.log("Error Occurred:",error);
+ }
 });
+
 
 // API for send all cart details
 
 router.get("/getCartDetails", async (req, res) => {
-  try {
-    const cartDetails = await CartCollection.find({ status: "N" });
+    try {
 
-    if (cartDetails) {
-      res.status(200).json({
-        success: true,
-        message: "Cart Details Fetched Successfully",
-        data: cartDetails,
-      });
-    } else {
-      res.status(400).json({
-        success: false,
-        message: "Error in fetching cart details",
-      });
+        const cartDetails = await CartCollection.find({ status: "N" });
+
+        if (cartDetails) {
+            res.status(200).json({
+                success: true,
+                message: "Cart Details Fetched Successfully",
+                data:cartDetails
+            })
+        } else {
+            res.status(400).json({
+                success: false,
+                message: "Error in fetching cart details",
+            })
+        }
+        
+    } catch (error) {
+        console.log("Error Occurred:",error)
     }
-  } catch (error) {
-    console.log("Error Occurred:", error);
-  }
-});
+})
 
 // API for deleting cart items
 
 router.post("/deleteCartItem", async (req, res) => {
-  try {
-    const { id } = req.body;
-    console.log(id);
 
-    const deletedItem = await CartCollection.deleteOne({ _id: id });
-
-    if (deletedItem) {
-      res.status(200).json({
-        success: true,
-        message: "Cart Item deleted successfully",
-        data: deletedItem,
-      });
-    } else {
-      res.status(400).json({
-        success: false,
-        message: "Can't able to delete cart Item",
-      });
+    try{
+        const {id} = req.body;
+        console.log(id);
+    
+        const deletedItem = await CartCollection.deleteOne({_id:id});
+    
+        if (deletedItem) {
+            
+            res.status(200).json({
+                success: true,
+                message: "Cart Item deleted successfully",
+                data:deletedItem
+            })
+        }
+        else {
+            res.status(400).json({
+                success: false,
+                message: "Can't able to delete cart Item"
+            })
+        }
+    } catch (error) {
+        console.log("Error Occurred:",error);
     }
-  } catch (error) {
-    console.log("Error Occurred:", error);
-  }
-});
-
+})
 
 // API for save order details and update order id against its products in cart details
 
@@ -183,6 +188,30 @@ router.post("/genBillCopy", async (req, res) => {
   }
 });
 
+
+// API for deleting all cart items
+
+router.post("/deleteAllCartItem", async (req, res) => {
+  
+  try {
+    const deletedAll = await OrderCollection.deleteMany();
+
+  if (deletedAll) {
+    res.status(200).json({
+      success: true,
+      message: "All cart items deleted"
+    })
+  }
+  else {
+    res.status(400).json({
+      success: true,
+      message: "Error in deleting cart items"
+    })
+  }
+  } catch (error) {
+    console.log("Error Occurred:", error);
+ }
+})
 
 
 module.exports = router;
