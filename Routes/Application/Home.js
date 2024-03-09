@@ -59,7 +59,7 @@ router.get("/getProduct", async (req, res) => {
 
 router.post("/cartInsert", async (req, res) => {
  try{
-    const { productName, productPrice, productQuantity } = await req.body;
+    const { productName, productPrice, productQuantity,UserId } = await req.body;
 
     //   console.log(productName, productPrice, productQuantity);
     
@@ -69,7 +69,8 @@ router.post("/cartInsert", async (req, res) => {
             productName: productName,
             productPrice: productPrice,
             productQuantity: productQuantity,
-            multiPrice:multiPrice
+            multiPrice:multiPrice,
+            UserId:UserId
         })
     
         const savedCartItem = await saveCartItem.save();
@@ -94,10 +95,13 @@ router.post("/cartInsert", async (req, res) => {
 
 // API for send all cart details
 
-router.get("/getCartDetails", async (req, res) => {
-    try {
+router.get("/getCartDetails/:id", async (req, res) => {
+  try {
+      
+    const {id} = req.params;
+    console.log(id)
 
-        const cartDetails = await CartCollection.find({ status: "N" });
+        const cartDetails = await CartCollection.find({ status: "N",UserId:id });
 
         if (cartDetails) {
             res.status(200).json({
@@ -150,22 +154,23 @@ router.post("/deleteCartItem", async (req, res) => {
 
 router.post("/genBillCopy", async (req, res) => {
   try {
-    const { totalPrice} = await req.body;
+    const { totalPrice,UserId} = await req.body;
 
     // console.log(totalPrice)
 
     const saveOrderDetail = new OrderCollection({
-      totalPrice: totalPrice
+      totalPrice: totalPrice,
+      UserId:UserId
     });
 
     const savedOrderDetail = await saveOrderDetail.save();
 
     const updateCDOrderID = await CartCollection.updateMany(
-      { status: "N" },
+      { status: "N",UserId:UserId },
       { $set: { OrderId: savedOrderDetail._id } },
     );
     const updateCDStatus = await CartCollection.updateMany(
-      { status: "N" },
+      { status: "N",UserId:UserId },
       { $set: { status: "Y"} },
     );
 

@@ -6,13 +6,14 @@ const OrderCollection = require("../../Models/Application/Order");
 
 router.post("/getBillReport", async (req, res) => {
   try {
-    const { startDate, endDate } = await req.body;
+    const { startDate, endDate ,UserId} = await req.body;
 
-    console.log(startDate, endDate);
+    console.log(startDate, endDate,UserId);
 
     // For filter order id between matched dates
 
     const matchCriteria = {
+      UserId:UserId,
       orderDate: {
         $gte: new Date(startDate),
         $lte: new Date(endDate),
@@ -66,7 +67,7 @@ router.post("/getBillReport", async (req, res) => {
       }
 
 
-    //  console.log("resultArray", resultArray);
+     console.log("resultArray", resultArray);
 
       if (result.length > 0 && OrderCartItems.length > 0 && resultArray.length >0) {
           res.status(200).json({
@@ -74,9 +75,9 @@ router.post("/getBillReport", async (req, res) => {
               message: "Billing report fetched successfully",
               OrderDetails: resultArray,
              
-         })
+          })
       } else {
-          res.status(200).json({
+          res.status(201).json({
            success:false,
            message:"No data available"
        })

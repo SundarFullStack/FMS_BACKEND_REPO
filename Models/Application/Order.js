@@ -10,6 +10,11 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default:new Date(),
         required:true,
+    },
+    UserId: {
+        type:String,
+        required:true
+     
     }
 },
     {

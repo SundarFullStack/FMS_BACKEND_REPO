@@ -9,7 +9,8 @@ const productSchema = new mongoose.Schema({
     itemType: {
         type: String,
         required:true
-    }
+    },
+    
 },
     {"collection":"Product"}
 )
